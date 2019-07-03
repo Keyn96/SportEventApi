@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SportEventApi.Models;
+using SportEventApi.DBModels;
 
 namespace SportEventApi.Controllers
 {
@@ -12,33 +12,26 @@ namespace SportEventApi.Controllers
     [ApiController]
     public class SportEventsController : ControllerBase
     {
-        private readonly SportEventContext _context;
+        private readonly SportEventsContext _context;
 
-        public SportEventsController(SportEventContext context)
+        public SportEventsController(SportEventsContext context)
         {
             _context = context;
         }
 
         // GET: api/SportEvents
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SportEvent>>> GetSportEventsItems()
+        public async Task<ActionResult<IEnumerable<SportEvent>>> GetSportEvents()
         {
             DateTime _dateTime = DateTime.Now;
-            return await _context.SportEventsItems.ToListAsync();//Where(x => x.DateEvent.Day == _dateTime.Day).
+            return  await _context.SportEvent.Where(x => x.Date.Day == _dateTime.Day).ToListAsync();
         }
 
-        // GET: api/SportEvents/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<SportEvent>> GetSportEvent(int id)
+        // GET: api/SportEvents/GetSportEventsInDatePeriod?date1&date2
+        [HttpGet("{dateStart, dateEnd}")]
+        public async Task<ActionResult<IEnumerable<SportEvent>>> GetSportEventsInDatePeriod(DateTime dateStart, DateTime dateEnd)
         {
-            var sportEvent = await _context.SportEventsItems.FindAsync(id);
-
-            if (sportEvent == null)
-            {
-                return NotFound();
-            }
-
-            return sportEvent;
+            return await _context.SportEvent.Where(x => x.Date.Date >= dateStart.Date && x.Date.Date <= dateEnd.Date).ToListAsync();
         }
     }
 }

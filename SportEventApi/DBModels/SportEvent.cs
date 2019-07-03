@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace SportEventApi.Models
+namespace SportEventApi.DBModels
 {
-    public class SportEvent
+    public partial class SportEvent
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
