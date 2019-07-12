@@ -19,14 +19,6 @@ namespace BetApi.DBModels
         public virtual DbSet<Player> Player { get; set; }
         public virtual DbSet<SportEvent> SportEvent { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=NOTE-PC;Database=TestTask;Trusted_Connection=True;");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
